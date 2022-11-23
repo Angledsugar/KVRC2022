@@ -35,5 +35,6 @@
   <node name="khnp_competition_tf_broadcaster" pkg="khnp_competition" type="tf_broadcaster.py"/>
   <!--  rviz  -->
   <node if="$(arg rviz)" name="rvizualizer" pkg="rviz" type="rviz" args="-d $(find khnp_competition)/../rviz.rviz" />
-
+  <node pkg="tf" type="static_transform_publisher" name="make_frame"
+    args="0.0 0.0 0.0 0.0 0.0 0.0 /odom /base_link 40"/>
 </launch>

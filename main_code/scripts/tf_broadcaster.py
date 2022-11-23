@@ -40,11 +40,17 @@ class caster():
                 current_pose = msg.pose[i]
                 self.br.sendTransform((current_pose.position.x, current_pose.position.y, current_pose.position.z),\
 (current_pose.orientation.x,current_pose.orientation.y,current_pose.orientation.z,current_pose.orientation.w),\
-self.timestamp,"base_link","map")
+self.timestamp,"odom","map")
+                self.br.sendTransform((current_pose.position.x, current_pose.position.y, current_pose.position.z+0.05),\
+(0.0,0.0,0.0,1.0),\
+self.timestamp,"camera_link","map")
                 self.marker.header.stamp = rospy.Time.now()
                 self.marker.pose = current_pose
                 self.marker_pub.publish(self.marker)
+        # self.br.sendTransform((0,0,1.0),(0,0,0), self.timestamp, "base_link", "odom")
         self.br.sendTransform((0.05, 0.0, 0.0), (0.5,-0.5,0.5,-0.5), self.timestamp, "d435i/depth_camera_link","base_link")
+        self.br.sendTransform((0.0, 0.0, 0.0), (0.0,0.0,0.0,1.0), self.timestamp, "scan1","camera_link")
+        self.br.sendTransform((0.0, 0.0, 1.0), (0.0,0.0,0.0,1.0), self.timestamp, "scan2","camera_link")
         return
 
 if __name__ == '__main__':

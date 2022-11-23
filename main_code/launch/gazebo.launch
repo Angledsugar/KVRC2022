@@ -17,8 +17,8 @@
     <arg if="$(eval arg('course') == 'practice')" name="world" value="$(find khnp_competition)/../gazebo_map_for_khnp/season2/practice.world"/>
     <arg if="$(eval arg('course') == 'real')" name="world" value="$(find khnp_competition)/../gazebo_map_for_khnp/season2/real.world" />
 
-    <arg name="x" default="0.0"/> 
-    <arg name="y" default="0.0"/> 
+    <arg name="x" default="0"/> 
+    <arg name="y" default="0"/> 
     <arg name="z" default="0.5"/> 
     <arg name="R" default="0"/>
     <arg name="P" default="0"/>

@@ -11,9 +11,10 @@ from tf.transformations import euler_from_quaternion, quaternion_from_euler
 import math
 
 import rospy
-from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import PoseStamped, Twist
 from mavros_msgs.srv import SetMode, CommandBool
 from mavros_msgs.msg import State
+
 
 import sys
 import signal
@@ -31,6 +32,7 @@ class robot():
         self.position_pub = rospy.Publisher('/mavros/setpoint_position/local', PoseStamped, queue_size=10)
         self.stat_sub = rospy.Subscriber('/mavros/state', State, self.stat_callback)
         self.pos_sub = rospy.Subscriber('/mavros/local_position/pose', PoseStamped, self.pose_callback)
+        self.cmd_vel = rospy.Publisher('/mavros/setpoint_velocity/cmd_vel_unstamped', Twist, queue_size=10)
         self.arming = rospy.ServiceProxy('/mavros/cmd/arming', CommandBool)
         self.offboarding = rospy.ServiceProxy('/mavros/set_mode', SetMode)
 
@@ -66,28 +68,32 @@ class robot():
                     self.control_init=True
 
             elif self.control_init:
-                pose_input=PoseStamped()
-                pose_input.header.stamp=rospy.Time.now()
-                pose_input.pose.orientation.w=1.0
-                if self.idx==0:
-                    pose_input.pose.position.x=0.0
-                    pose_input.pose.position.y=0.0
-                    pose_input.pose.position.z=0.8
-                    if abs(self.truth.x-0.0) < 0.2 and abs(self.truth.y-0.0) < 0.2 and abs(self.truth.z-0.8) < 0.2:
-                        self.idx=1
-                elif self.idx==1:
-                    pose_input.pose.position.x=2.95
-                    pose_input.pose.position.y=0.0
-                    pose_input.pose.position.z=0.8
-                    if abs(self.truth.x-2.95) < 0.2 and abs(self.truth.y-0.0) < 0.2 and abs(self.truth.z-0.8) < 0.2:
-                        self.idx=2
-                elif self.idx==2:
-                    pose_input.pose.position.x=2.95
-                    pose_input.pose.position.y=-1.6
-                    pose_input.pose.position.z=0.8
-                    if abs(self.truth.x-2.95) < 0.2 and abs(self.truth.y+1.6) < 0.2 and abs(self.truth.z-0.8) < 0.2:
-                        self.idx=1
-                self.position_pub.publish(pose_input)
+                purpose_vel=Twist()
+                purpose_vel.linear.x=0.0
+                purpose_vel.linear.z=0.0
+                self.cmd_vel.publish(purpose_vel)
+                # pose_input=PoseStamped()
+                # pose_input.header.stamp=rospy.Time.now()
+                # pose_input.pose.orientation.w=1.0
+                # if self.idx==0:
+                #     pose_input.pose.position.x=0.0
+                #     pose_input.pose.position.y=0.0
+                # pose_input.pose.position.z=0.8
+                    # if abs(self.truth.x-0.0) < 0.2 and abs(self.truth.y-0.0) < 0.2 and abs(self.truth.z-0.8) < 0.2:
+                    #     self.idx=1
+                # elif self.idx==1:
+                #     pose_input.pose.position.x=2.95
+                #     pose_input.pose.position.y=0.0
+                #     pose_input.pose.position.z=0.8
+                #     if abs(self.truth.x-2.95) < 0.2 and abs(self.truth.y-0.0) < 0.2 and abs(self.truth.z-0.8) < 0.2:
+                #         self.idx=2
+                # elif self.idx==2:
+                #     pose_input.pose.position.x=2.95
+                #     pose_input.pose.position.y=-1.6
+                #     pose_input.pose.position.z=0.8
+                #     if abs(self.truth.x-2.95) < 0.2 and abs(self.truth.y+1.6) < 0.2 and abs(self.truth.z-0.8) < 0.2:
+                #         self.idx=1
+                # self.position_pub.publish(pose_input)
 
 ##############################################################################################
 

@@ -10,12 +10,12 @@
     </include> -->
 
     <!-- run pointcloud_to_laserscan node -->
-    <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
+    <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan2">
 
         <remap from="cloud_in" to="$(arg camera)/depth/pointcloud"/>
-        <remap from="scan" to="$(arg camera)/scan"/>
+        <remap from="scan" to="$(arg camera)/scan2"/>
         <rosparam>
-            target_frame: scan1 # d435i/depth_camera_link Leave disabled to output scan in pointcloud frame
+            target_frame: scan2 # d435i/depth_camera_link Leave disabled to output scan in pointcloud frame
             transform_tolerance: 0.01
             min_height: 0.0
             max_height: 1.0
