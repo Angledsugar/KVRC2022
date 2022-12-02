@@ -163,7 +163,7 @@ if __name__ == "__main__":
     Defining the simulation related constants
     '''
     NUM_EPISODES = 50000
-    MAX_T = np.prod(MAZE_SIZE, dtype=int) * 100
+    MAX_T = np.prod(MAZE_SIZE, dtype=int) * 10000000
     STREAK_TO_END = 100
     SOLVED_T = np.prod(MAZE_SIZE, dtype=int)
     DEBUG_MODE = 0
