@@ -113,6 +113,7 @@ class MazeView2D:
             if self.is_waypoint(self.robot):
                 self.__waypoint[tuple(self.robot)] = 1
                 self.__colour_cell(self.robot, colour=(200, 200, 200), transparency=0)
+
                 # time.sleep(1)
             # if it's in a portal afterward
             # if self.maze.is_portal(self.robot):
@@ -126,6 +127,9 @@ class MazeView2D:
         # self.__robot = np.zeros(2, dtype=int)
         self.__robot = np.array(self.maze_size) - np.array((6, 1)) 
         self.__draw_robot(transparency=255)
+
+        for i in self.__waypoint.keys():
+            self.__waypoint[i] = 0
 
     def is_waypoint(self, cell):
         return tuple(cell) in self.__waypoint.keys()
@@ -283,7 +287,12 @@ class MazeView2D:
         elif self.randomwaypoint == 1:
             # print("waypoint", self.__waypoint.keys())
             # if lambda x: x + i for i in self.__waypoint.values()
-            for i in self.__waypoint.keys(): self.__colour_cell(i, colour=(120, 120, 0), transparency=transparency) 
+            for i in self.__waypoint.keys(): 
+                self.__colour_cell(i, colour=(120, 120, 0), transparency=transparency)
+                
+                if self.__waypoint[i] == 1:
+                    self.__colour_cell(i, colour=(200, 200, 200), transparency=transparency)
+
 
 
     def __colour_cell(self, cell, colour, transparency):
